@@ -89,9 +89,9 @@
                 <button class="btn" type="button" data-bs-theme="dark">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <form class="d-flex">
-                    <input class="form-control me-2" name="tcari" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-primary" name="bcari" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <form class="d-flex justify-content-end" role="search" action="{{ Route::is('datamurid.siswa_index') ? route('datamurid.siswa_index') : route('dataguru.guru_index') }}" method="GET">
+                    <input class="form-control me-2" type="search" placeholder="Cari" aria-label="Cari" name="search">
+                    <button class="btn btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
             </nav>
             <main class="content">

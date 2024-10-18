@@ -31,22 +31,22 @@
                         <tbody>
                             @if ($students->count() > 0)
                                 @foreach ($students as $index => $item)
-                                    <tr >
+                                    <tr>
                                         <td>{{ ($students->currentPage() - 1) * $students->perPage() + ($index + 1) }}</td>
                                         <td>{{ $item['siswa'] }}</td>
                                         <td>{{ $item['nis'] }}</td>
                                         <td>{{ $item['jenis_absen'] }}</td>
-                                        <td class="{{ $item['jam']}}">
+                                        <td class="{{ $item['jam'] }}">
                                             {{ $item['jam'] }}</td>
                                         <td>{{ $item['rayon'] }}</td>
                                         <td>{{ $item['rombel'] }}</td>
                                         <td class="d-flex justify-content-center">
-                                            <a href="{{ route('datamurid.siswa_edit', $item['id']) }}" class="btn btn-warning btn-sm me-2">Edit <i class="fa-solid fa-edit"></i></a>
-                                            <form action="{{ route('datamurid.siswa_delete', $item['id']) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">Delete <i class="fa-solid fa-trash"></i></button>
-                                            </form>
+                                            <a href="{{ route('datamurid.siswa_edit', $item['id']) }}"
+                                                class="btn btn-warning btn-sm me-2">Edit <i
+                                                    class="fa-solid fa-edit"></i></a>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                onclick="showModalDelete('{{ $item->id }}', '{{ $item->siswa }}')">
+                                                Hapus<i class="fa-solid fa-trash ms-2"></i></button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -57,8 +57,44 @@
                             @endif
                         </tbody>
                     </table>
-                </div>
+                    <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form class="modal-content" method="POST" id="deleteForm">
+                                @csrf
+                                @method('DELETE')
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Konfirmasi Hapus</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Apakah kamu yakin menghapus data siswa <b id="name-user"></b>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-danger">Confirm</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                @endsection
+
+                @push('script')
+                    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+                        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+                    <script>
+                        function showModalDelete(id, name) {
+                            $('#name-user').text(name);
+                            $('#modalDelete').modal('show');
+
+                            let url = "{{ route('datamurid.siswa_delete', ':id') }}";
+                            url = url.replace(':id', id);
+                            $("#deleteForm").attr('action', url); // Ensure this is correctly set to the delete route
+                        }
+                    </script>
+                @endpush
             </div>
         </div>
     </div>
-@endsection
+</div>
